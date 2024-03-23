@@ -1,5 +1,5 @@
 import Image from "next/image";
-import AvatarWraps from "../../public/assets/AvatarWraps.png";
+import AvatarWraps from "../../public/assets/Avatarwraps.png";
 import ActivitySearchs from "../../public/assets/activitysearch.png";
 
 export default function ActivitySearch() {
