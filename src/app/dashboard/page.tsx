@@ -11,23 +11,6 @@ import { AuthService } from "@/services/content/Auth/AuthService";
 import { useEffect, useState } from "react";
 import { BoardService } from "@/services/content/Board/BoardService.ts";
 const Dashboard = () => {
-  const [board, setBoard] = useState([]);
-  const boardService = new BoardService();
-
-  useEffect(() => {
-    fetchBoards();
-  }, []);
-
-  const fetchBoards = async () => {
-    try {
-      const response = await boardService.getBoard();
-      const boardsData = response.data.data;
-      setBoard(boardsData);
-    } catch (error) {
-      console.error("Error fetching flags:", error);
-    }
-  };
-
   return (
     <>
       <Header />
@@ -54,7 +37,7 @@ const Dashboard = () => {
           </div>
           <DashboardButtons />
           <div className={"h-[720px] flex w-[319px]"}>
-            <Board board={board} />
+            <Board />
           </div>
         </div>
       </div>

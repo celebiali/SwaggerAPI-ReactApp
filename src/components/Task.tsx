@@ -3,20 +3,27 @@ import Image from "next/image";
 import AvatarGroup from "../../public/assets/avatargroup.png";
 import Calendar from "../../public/assets/calendar.png";
 import Flag from "../../public/assets/Flag.png";
-
+import TaskDetail from "../components/modals/TaskDetail";
 import Rectangle from "../../public/assets/rectangle.png";
 import React, { useEffect, useState } from "react";
 import { FlagsService } from "../services/content/Commons/FlagsService";
+import { TasksService } from "../services/content/Tasks/TasksService.ts";
 
-export default function Task({ item }) {
+export default function Task({ item, fetchBoards, setShowConfirmationModals }) {
   const tasks = item.tasks;
+  const boardName = item.name;
+
   const [flags, setFlags] = useState([]);
   const flagsService = new FlagsService();
-
+  const [isTaskDetailOpen, setIsTaskDetailOpen] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
   useEffect(() => {
     fetchFlags();
   }, []);
-
+  const handleTaskClick = (task) => {
+    setSelectedTask(task);
+    setIsTaskDetailOpen(true);
+  };
   const fetchFlags = async () => {
     try {
       const response = await flagsService.getFlags();
@@ -26,7 +33,24 @@ export default function Task({ item }) {
       console.error("Error fetching flags:", error);
     }
   };
-
+  const tasksService = new TasksService();
+  const handleCreateTask = async () => {
+    try {
+      const taskData = {
+        name: name,
+        description: description,
+        boardId: board.id,
+        flagId: flagId,
+        startDate: startDate,
+        endDate: endDate,
+      };
+      await tasksService.createTasks(taskData); // Yeni görev oluştur
+      handleClose(); // Modalı kapat
+      fetchBoards(); // Board verilerini güncelle
+    } catch (error) {
+      console.error("Error creating task:", error);
+    }
+  };
   const getFlagNameById = (flagId) => {
     const flag = flags.find((flag) => flag.id === flagId);
     return flag ? flag.name : "Flag bilgisi yok";
@@ -40,21 +64,20 @@ export default function Task({ item }) {
   return (
     <div>
       {tasks.map((task) => (
-        <div key={task.id}>
+        <div key={task.id} onClick={() => handleTaskClick(task)}>
           <div className="items-center mx-auto w-[300px] rounded-lg shadow-sm border border-gray-300 mt-[4px] px-3 py-3">
             <div className="text-sm font-medium text-left leading-4.5 text-poppins text-[#F38744]">
               {task.name}
             </div>
-            <div className="flex pt-2">
+            <div className="flex pt-2 justify-between">
               <div className="text-sm font-medium text-left leading-4.5 text-poppins text-[#475467]">
-                Bu örnek görevdir. Örnek görevin içeriğine dair açıklama
-                detail’da bulunmaktadır.
+                {task.description || "Açıklama bilgisi yok"}
               </div>
               <div>
                 <Image
                   src={AvatarGroup}
-                  width={88}
-                  height={48}
+                  width={44}
+                  height={24}
                   alt="avatar_group"
                 />
               </div>
@@ -112,6 +135,16 @@ export default function Task({ item }) {
           </div>
         </div>
       ))}
+      {isTaskDetailOpen && (
+        <TaskDetail
+          onClose={() => setIsTaskDetailOpen(false)}
+          setShowConfirmationModals={setShowConfirmationModals}
+          task={selectedTask}
+          boardName={boardName}
+          fetchBoards={fetchBoards}
+          flagColor={getFlagColorById(selectedTask.flagId)}
+        />
+      )}
     </div>
   );
 }
