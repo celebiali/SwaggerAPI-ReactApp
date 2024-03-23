@@ -4,7 +4,7 @@ import AvatarWrap from "../../public/assets/Avatarwrap.png";
 export default function Attachment() {
   const [activeTab, setActiveTab] = useState(1);
 
-  const handleTabClick = (tabNumber) => {
+  const handleTabClick = (tabNumber: any) => {
     setActiveTab(tabNumber);
   };
 

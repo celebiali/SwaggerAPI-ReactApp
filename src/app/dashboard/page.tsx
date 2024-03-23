@@ -9,7 +9,7 @@ import Image from "next/image";
 import FilterIcon from "../../../public/assets/filter.png";
 import { AuthService } from "@/services/content/Auth/AuthService";
 import { useEffect, useState } from "react";
-import { BoardService } from "@/services/content/Board/BoardService.ts";
+import { BoardService } from "@/services/content/Board/BoardService";
 const Dashboard = () => {
   return (
     <>

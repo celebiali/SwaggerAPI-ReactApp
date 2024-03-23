@@ -1,7 +1,7 @@
 "use client";
 import Projects from "./Projects";
 import Image from "next/image";
-import Button from "../../public/assets/button.png";
+import Button from "../../public/assets/Button.png";
 import { AuthService } from "../services/content/Auth/AuthService";
 import React, { useEffect, useState } from "react";
 

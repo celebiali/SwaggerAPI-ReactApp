@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BoardService } from "../services/content/Board/BoardService.ts";
+import { BoardService } from "../services/content/Board/BoardService";
 import Image from "next/image";
 import PlusIcon from "../../public/assets/plus.png";
 import MoreCircleIcon from "../../public/assets/morecircle.png";
@@ -19,19 +19,19 @@ export default function Board() {
   const fetchBoards = async () => {
     try {
       const response = await boardService.getBoard();
-      const boardsData = response.data.data;
+      const boardsData: any = response.data.data;
       setBoard(boardsData);
     } catch (error) {
       console.error("Error fetching flags:", error);
     }
   };
 
-  const handleMouseEnter = (id) => {
-    setHoveredIds((prevIds) => [...prevIds, id]);
+  const handleMouseEnter = (id: any) => {
+    setHoveredIds((prevIds: any) => [...prevIds, id]);
   };
 
-  const handleMouseLeave = (id) => {
-    setHoveredIds((prevIds) => prevIds.filter((prevId) => prevId !== id));
+  const handleMouseLeave = (id: any) => {
+    setHoveredIds((prevIds: any) => prevIds.filter((prevId) => prevId !== id));
   };
 
   return (
